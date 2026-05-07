@@ -21,7 +21,8 @@ namespace ToyShelf.Infrastructure.Repositories
 			int pageNumber = 1,
 			int pageSize = 10,
 			ShelfStatus? status = null,
-			Guid? inventoryLocationId = null)
+			Guid? inventoryLocationId = null,
+			Guid? shelfTypeId = null)
 		{
 			var query = _context.Shelves
 				.Include(s => s.ShelfType)
@@ -36,7 +37,10 @@ namespace ToyShelf.Infrastructure.Repositories
 			if (inventoryLocationId.HasValue && inventoryLocationId != Guid.Empty)
 				query = query.Where(s => s.InventoryLocationId == inventoryLocationId.Value);
 
-			var totalCount = await query.CountAsync();
+            if (shelfTypeId.HasValue && shelfTypeId != Guid.Empty)
+                query = query.Where(s => s.ShelfTypeId == shelfTypeId.Value);
+
+            var totalCount = await query.CountAsync();
 
 			var items = await query
 				.OrderByDescending(s => s.AssignedAt)

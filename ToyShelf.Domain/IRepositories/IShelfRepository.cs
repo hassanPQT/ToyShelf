@@ -8,12 +8,13 @@ using ToyShelf.Domain.Entities;
 namespace ToyShelf.Domain.IRepositories
 {
     public interface IShelfRepository : IGenericRepository<Shelf>
-    {
+	{
 		Task<(IEnumerable<Shelf> Items, int TotalCount)> GetShelvesPaginatedAsync(
 			int pageNumber = 1,
 			int pageSize = 10,
 			ShelfStatus? status = null,
-			Guid? inventoryLocationId = null);
+			Guid? inventoryLocationId = null, Guid? shelfTypeId = null);
+		    
 
 		Task<int> CountActiveShelvesByLocationAsync(Guid inventoryLocationId);
 		Task<Shelf?> GetByIdWithDetailsAsync(Guid id);
