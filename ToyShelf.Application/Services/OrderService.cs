@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Net.NetworkInformation;
 using ToyShelf.Application.Common;
 using ToyShelf.Application.IServices;
 using ToyShelf.Application.Models.Order;
@@ -193,29 +194,28 @@ namespace ToyShelf.Application.Services
 			return response;
 		}
 
-		public async Task<List<OrderResponse>> GetOrdersAsync(Guid? storeId, Guid? partnerId, string? searchTerm, DateTime? date)
+		public async Task<List<OrderResponse>> GetOrdersAsync(Guid? storeId, Guid? partnerId, string? searchTerm, DateTime? fromDate, DateTime? toDate, string? status)
 		{
-			
-			var orders = await _orderRepository.GetOrdersAsync(storeId, partnerId, searchTerm, date);
 
-			
-			var responseList = orders.Select(o => new OrderResponse
-			{
-				Id = o.Id,
-				OrderCode = o.OrderCode,
-				CustomerName = o.CustomerName,
-				CustomerEmail = o.CustomerEmail,
-				BankReference = o.BankReference,
+            var orders = await _orderRepository.GetOrdersAsync(storeId, partnerId, searchTerm, fromDate, toDate, status);
+
+            var responseList = orders.Select(o => new OrderResponse
+            {
+                Id = o.Id,
+                OrderCode = o.OrderCode,
+                CustomerName = o.CustomerName,
+                CustomerEmail = o.CustomerEmail,
+                BankReference = o.BankReference,
                 TotalAmount = o.TotalAmount,
-				PaymentMethod = o.PaymentMethod,
-				Status = o.Status,
-				CreatedAt = o.CreatedAt,
-				IsLocked = o.IsLocked,
-				StoreName = o.Store?.Name 
-			}).ToList();
+                PaymentMethod = o.PaymentMethod,
+                Status = o.Status,
+                CreatedAt = o.CreatedAt,
+                IsLocked = o.IsLocked,
+                StoreName = o.Store?.Name
+            }).ToList();
 
-			return responseList;
-		}
+            return responseList;
+        }
 
 		public async Task<IEnumerable<OrderResponse>> GetOrdersByEmailAsync(string Email)
 		{

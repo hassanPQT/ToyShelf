@@ -16,24 +16,27 @@ namespace ToyShelf.API.Controllers
 			_orderService = orderService;
 		}
 
-		/// <summary>
-		/// Get Orders with dynamic filters (StoreId, PartnerId, Phone)
-		/// </summary>
-		[HttpGet]
-		public async Task<BaseResponse<IEnumerable<OrderResponse>>> GetOrders(
-			[FromQuery] Guid? storeId,
-			[FromQuery] Guid? partnerId,
-			[FromQuery] string? searchTerm, [FromQuery] DateTime? date) 
-		{
-			var result = await _orderService.GetOrdersAsync(storeId, partnerId, searchTerm, date);
+        /// <summary>
+        /// Get Orders with dynamic filters (StoreId, PartnerId, Phone)
+        /// </summary>
+        [HttpGet]
+        public async Task<BaseResponse<IEnumerable<OrderResponse>>> GetOrders(
+        [FromQuery] Guid? storeId,
+        [FromQuery] Guid? partnerId,
+        [FromQuery] string? searchTerm,
+        [FromQuery] DateTime? fromDate,
+        [FromQuery] DateTime? toDate,
+        [FromQuery] string? status)
+        {
+            var result = await _orderService.GetOrdersAsync(storeId, partnerId, searchTerm, fromDate, toDate, status);
 
-			return BaseResponse<IEnumerable<OrderResponse>>.Ok(result);
-		}
+            return BaseResponse<IEnumerable<OrderResponse>>.Ok(result);
+        }
 
-		/// <summary>
-		/// lấy detail order 
-		/// </summary>
-		[HttpGet("{ordercode}")]
+        /// <summary>
+        /// lấy detail order 
+        /// </summary>
+        [HttpGet("{ordercode}")]
 		public async Task<BaseResponse<OrderDetailResponse?>> GetByOrderCode(long ordercode)
 		{
 			var result = await _orderService.GetOrderDetailsAsync(ordercode);
