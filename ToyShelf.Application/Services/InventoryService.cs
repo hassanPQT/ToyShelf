@@ -58,6 +58,31 @@ namespace ToyShelf.Application.Services
 				_inventoryRepository.Update(inventory);
 			}
 
+			// Inventory Transaction
+			var transaction = new InventoryTransaction
+			{
+				Id = Guid.NewGuid(),
+
+				ProductColorId = request.ProductColorId,
+
+				// Refill từ ngoài hệ thống
+				FromLocationId = null,
+				ToLocationId = request.InventoryLocationId,
+
+				FromStatus = null,
+				ToStatus = InventoryStatus.Available,
+
+				Quantity = request.Quantity,
+
+				ReferenceType = InventoryReferenceType.Refill,
+				ReferenceId = null,
+
+				CreatedAt = DateTime.UtcNow
+			};
+
+			await _transactionRepository.AddAsync(transaction);
+
+
 			await _unitOfWork.SaveChangesAsync();
 
 			return MapToResponse(inventory);
@@ -621,6 +646,10 @@ namespace ToyShelf.Application.Services
 			DateTime? fromDate,
 			DateTime? toDate)
 		{
+
+			var location = await _inventoryRepository.GetLocationByIdAsync(locationId);
+			if (location == null) throw new AppException("Location not found", 404);
+
 			var transactions = await _transactionRepository
 				.GetByProductColorAndLocationAsync(productColorId, locationId);
 
@@ -680,6 +709,7 @@ namespace ToyShelf.Application.Services
 			return new InventoryAuditResponse
 			{
 				LocationId = locationId,
+				LocationType = location.Type,
 				ProductColorId = productColorId,
 				OpeningStock = openingStock,
 				Transactions = items,

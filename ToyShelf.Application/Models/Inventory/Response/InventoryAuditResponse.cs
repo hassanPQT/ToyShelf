@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToyShelf.Domain.Entities;
 
 namespace ToyShelf.Application.Models.Inventory.Response
 {
 	public class InventoryAuditResponse
 	{
 		public Guid LocationId { get; set; }
+		public InventoryLocationType LocationType { get; set; }
 		public Guid ProductColorId { get; set; }
 
 		public int OpeningStock { get; set; }

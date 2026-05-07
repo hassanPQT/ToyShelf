@@ -19,9 +19,9 @@ namespace ToyShelf.Domain.Entities
 	{
 		public Guid Id { get; set; }
 		public Guid ProductColorId { get; set; }
-		public Guid FromLocationId { get; set; }
+		public Guid? FromLocationId { get; set; }
 		public Guid ToLocationId { get; set; }
-		public InventoryStatus FromStatus { get; set; }
+		public InventoryStatus? FromStatus { get; set; }
 		public InventoryStatus ToStatus { get; set; }
 		public int Quantity { get; set; }
 		public InventoryReferenceType ReferenceType { get; set; }
@@ -29,7 +29,7 @@ namespace ToyShelf.Domain.Entities
 		public DateTime CreatedAt { get; set; }
 		// Navigation
 		public virtual ProductColor ProductColor { get; set; } = null!;
-		public virtual InventoryLocation FromLocation { get; set; } = null!;
+		public virtual InventoryLocation? FromLocation { get; set; }
 		public virtual InventoryLocation ToLocation { get; set; } = null!;
 	}
 }
