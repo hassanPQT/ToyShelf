@@ -33,10 +33,10 @@ namespace ToyShelf.Infrastructure.Email
 		{
 			var subject = purpose switch
 			{
-				OtpPurpose.ACTIVATE_ACCOUNT => "Activate your ToyCabin account",
-				OtpPurpose.RESET_PASSWORD => "Reset your ToyCabin password",
-				OtpPurpose.SET_LOCAL_PASSWORD => "Set your ToyCabin password",
-				_ => "ToyCabin verification code"
+				OtpPurpose.ACTIVATE_ACCOUNT => "Activate your ToyShelf account",
+				OtpPurpose.RESET_PASSWORD => "Reset your ToyShelf password",
+				OtpPurpose.SET_LOCAL_PASSWORD => "Set your ToyShelf password",
+				_ => "ToyShelf verification code"
 			};
 
 			var vietnamTimeZone = VietnamTimeZoneResolver.VietnamTimeZone;

@@ -66,7 +66,7 @@ namespace ToyShelf.Infrastructure.Email
 						<hr style='margin:24px 0'/>
 
 						<p style='font-size:12px;color:#a0aec0'>
-							© ToyCabin. All rights reserved.
+							© ToyShelf. All rights reserved.
 						</p>
 					</div>
 				</body>
