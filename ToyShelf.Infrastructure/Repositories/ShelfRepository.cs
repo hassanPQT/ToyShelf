@@ -116,5 +116,16 @@ namespace ToyShelf.Infrastructure.Repositories
 			.Select(s => s.Code)
 			.FirstOrDefaultAsync();
 		}
-	}
+
+        public async Task<int> CountShelvesAsync(ShelfStatus? status = null)
+        {
+            if (status.HasValue)
+            {
+                return await _context.Shelves.CountAsync(s => s.Status == status.Value);
+            }
+
+           
+            return await _context.Shelves.CountAsync();
+        }
+    }
 }

@@ -24,5 +24,6 @@ namespace ToyShelf.Application.IServices
 
 		Task DeleteAsync(Guid id);
         Task<ShelfResponse> UpdateShelftStatus(Guid id, ShelfStatus newStatus);
+        Task<int> GetCountAsync(ShelfStatus? status = null);
     }
 }

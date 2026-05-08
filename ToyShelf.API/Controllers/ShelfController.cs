@@ -104,5 +104,17 @@ namespace ToyShelf.API.Controllers
             return BaseResponse<ShelfResponse>.Ok(result, "Shelf status updated successfully");
 
         }
+
+        /// <summary>
+		/// Get total count of shelves, optionally filtered by status.
+		/// </summary>
+		[HttpGet("count")]
+        public async Task<BaseResponse<object>> GetCount([FromQuery] ShelfStatus? status = null)
+        {
+            var count = await _shelfService.GetCountAsync(status);
+ 
+            var result = new { TotalShelf = count };
+            return BaseResponse<object>.Ok(result, "Shelf count retrieved successfully");
+        }
     }
 }
