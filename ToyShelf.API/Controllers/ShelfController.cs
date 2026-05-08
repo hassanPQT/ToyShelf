@@ -28,13 +28,13 @@ namespace ToyShelf.API.Controllers
 			[FromQuery] int pageNumber = 1,
 			[FromQuery] int pageSize = 10,
 			[FromQuery] string? status = null,
-			[FromQuery] Guid? inventoryLocationId = null)
+			[FromQuery] Guid? inventoryLocationId = null, [FromQuery] Guid? shelfTypeId = null)
 		{
 			var result = await _shelfService.GetPaginatedAsync(
 				pageNumber,
 				pageSize,
 				status,
-				inventoryLocationId);
+				inventoryLocationId, shelfTypeId);
 
 			return BaseResponse<PaginatedResult<ShelfResponse>>
 				.Ok(result, "Shelves retrieved successfully");

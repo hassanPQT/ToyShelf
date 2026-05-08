@@ -142,6 +142,12 @@ namespace ToyShelf.Application.Services
                 .OrderByDescending(d => d.Date)
                 .ToList();
 
+            response.TotalOrders = settlement.CommissionHistories
+			 .Where(ch => ch.OrderItem?.Order != null)
+			 .Select(ch => ch.OrderItem!.OrderId)
+			 .Distinct()
+			 .Count();
+
             return response;
         }
 

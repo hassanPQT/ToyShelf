@@ -17,60 +17,69 @@ namespace ToyShelf.Infrastructure.Repositories
 		{
 		}
 
-		public async Task<List<Order>> GetOrdersAsync(Guid? storeId, Guid? partnerId, string? searchTerm, DateTime? date)
+		public async Task<List<Order>> GetOrdersAsync(Guid? storeId, Guid? partnerId, string? searchTerm, DateTime? fromDate, DateTime? toDate, string? status)
 		{
-			
-			var query = _context.Orders
-				.Include(o => o.Store)
-				.Include(o => o.Staff)
-				.Include(o => o.OrderItems)
-					.ThenInclude(oi => oi.ProductColor) 
-				.AsQueryable();
 
-			if (storeId.HasValue)
-			{
-				query = query.Where(o => o.StoreId == storeId.Value);
-			}
+            var query = _context.Orders
+        .Include(o => o.Store)
+        .Include(o => o.Staff)
+        .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.ProductColor)
+        .AsQueryable();
 
-			if (partnerId.HasValue)
-			{
-				query = query.Where(o => o.Store != null && o.Store.PartnerId == partnerId.Value);
-			}
+            if (storeId.HasValue)
+            {
+                query = query.Where(o => o.StoreId == storeId.Value);
+            }
+
+            if (partnerId.HasValue)
+            {
+                query = query.Where(o => o.Store != null && o.Store.PartnerId == partnerId.Value);
+            }
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 var cleanTerm = searchTerm.Trim();
 
-                // Kiểm tra xem chuỗi nhập vào có phải là số không (để ưu tiên OrderCode)
                 if (long.TryParse(cleanTerm, out long parsedOrderCode))
                 {
-                    // Nếu là số: Tìm chính xác OrderCode HOẶC tìm tương đối trong BankRef/Email
                     query = query.Where(o => o.OrderCode == parsedOrderCode
                                           || (o.BankReference != null && o.BankReference.Contains(cleanTerm))
                                           || (o.CustomerEmail != null && o.CustomerEmail.Contains(cleanTerm)));
                 }
                 else
                 {
-                    // Nếu là chữ: Tìm tương đối trong BankRef hoặc Email, 
                     query = query.Where(o => o.OrderCode.ToString().Contains(cleanTerm)
                                           || (o.BankReference != null && o.BankReference.Contains(cleanTerm))
                                           || (o.CustomerEmail != null && o.CustomerEmail.Contains(cleanTerm)));
                 }
-            
             }
-            if (date.HasValue)
+
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+              
+                query = query.Where(o => o.Status == status);
+            }
+
+            // --- THÊM LỌC TỪ NGÀY (FROM DATE) ---
+            if (fromDate.HasValue)
             {
 
-                var utcDate = DateTime.SpecifyKind(date.Value.Date, DateTimeKind.Utc);
+                var utcFromDate = DateTime.SpecifyKind(fromDate.Value.Date, DateTimeKind.Utc);
+                query = query.Where(o => o.CreatedAt >= utcFromDate);
+            }
 
-                var startOfDay = utcDate;
-                var endOfDay = startOfDay.AddDays(1).AddTicks(-1);
-
-                query = query.Where(o => o.CreatedAt >= startOfDay && o.CreatedAt <= endOfDay);
+       
+            if (toDate.HasValue)
+            {
+         
+                var utcToDate = DateTime.SpecifyKind(toDate.Value.Date, DateTimeKind.Utc);
+                var endOfToDate = utcToDate.AddDays(1).AddTicks(-1);
+                query = query.Where(o => o.CreatedAt <= endOfToDate);
             }
 
             return await query.OrderByDescending(o => o.CreatedAt).ToListAsync();
-		}
+        }
 
 		public async Task<IEnumerable<Order>> GetOrdersByCustomerPhoneAsync(string phone)
 		{

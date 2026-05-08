@@ -20,7 +20,7 @@ namespace ToyShelf.Application.IServices
             int pageNumber = 1,
             int pageSize = 10,
             string? status = null,
-            Guid? inventoryLocationId = null);
+            Guid? inventoryLocationId = null, Guid? shelfTypeId = null);
 
 		Task DeleteAsync(Guid id);
         Task<ShelfResponse> UpdateShelftStatus(Guid id, ShelfStatus newStatus);

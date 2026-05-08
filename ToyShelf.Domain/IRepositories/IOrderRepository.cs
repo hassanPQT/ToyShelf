@@ -12,7 +12,7 @@ namespace ToyShelf.Domain.IRepositories
 		Task<Order?> GetOrderWithItemsAndStoreAsync(long orderCode);
 		Task<Order?> GetOrderWithDetailsByCodeAsync(long orderCode);
 
-		Task<List<Order>> GetOrdersAsync(Guid? storeId, Guid? partnerId, string? searchTerm, DateTime? date);
+		Task<List<Order>> GetOrdersAsync(Guid? storeId, Guid? partnerId, string? searchTerm, DateTime? fromDate, DateTime? toDate, string? status);
 		Task<IEnumerable<Order>> GetOrdersByCustomerPhoneAsync(string phone);
 		Task<(int TotalOrders, decimal TotalRevenue)> GetStoreStatsAsync(Guid storeId, DateTime? fromDate = null, DateTime? toDate = null);
 		Task<List<DailyStatResult>> GetStoreChartDataAsync(Guid storeId, DateTime startDate, DateTime endDate);

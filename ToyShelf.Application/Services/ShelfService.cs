@@ -148,7 +148,7 @@ namespace ToyShelf.Application.Services
 			int pageNumber = 1,
 			int pageSize = 10,
 			string? status = null,
-			Guid? inventoryLocationId = null)
+			Guid? inventoryLocationId = null, Guid? shelfTypeId = null)
 		{
 			if (pageNumber < 1) pageNumber = 1;
 			if (pageSize < 1) pageSize = 10;
@@ -164,7 +164,7 @@ namespace ToyShelf.Application.Services
 				pageNumber,
 				pageSize,
 				shelfStatus,
-				inventoryLocationId);
+				inventoryLocationId, shelfTypeId);
 
 			return new PaginatedResult<ShelfResponse>
 			{
