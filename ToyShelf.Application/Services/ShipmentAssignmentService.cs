@@ -639,8 +639,7 @@ namespace ToyShelf.Application.Services
 
 					Quantity = item.Quantity ?? 1,
 
-					ImageUrl = item.DamageMedia?.FirstOrDefault()?.MediaUrl
-							   ?? item.ProductColor?.ImageUrl
+					ImageUrl = item.ProductColor?.ImageUrl
 				})).ToList();
 
 			return response;
