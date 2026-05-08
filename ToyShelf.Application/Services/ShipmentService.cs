@@ -1257,7 +1257,20 @@ namespace ToyShelf.Application.Services
 				StoreReceivedAt = shipment.StoreReceivedAt,
 				ReturnPickedUpAt = shipment.ReturnPickedUpAt,
 				ArrivedWarehouseAt = shipment.ArrivedWarehouseAt,
-				WarehouseReceivedAt = shipment.WarehouseReceivedAt
+				WarehouseReceivedAt = shipment.WarehouseReceivedAt,
+
+				Medias = shipment.Media?
+					.OrderBy(x => x.CreatedAt)
+					.Select(x => new ShipmentMediaResponse
+					{
+						Id = x.Id,
+						MediaUrl = x.MediaUrl,
+						MediaType = x.MediaType,
+						Purpose = x.Purpose,
+						CreatedAt = x.CreatedAt,
+						UploadedByUserId = x.UploadedByUserId,
+						UploadedByName = x.UploadedByUser?.FullName ?? "Unknown"
+					}).ToList() ?? new List<ShipmentMediaResponse>()
 			};
 
 			var deliveryItems = shipment.Items
