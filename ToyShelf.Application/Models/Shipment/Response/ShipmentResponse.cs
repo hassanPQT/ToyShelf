@@ -50,6 +50,7 @@ namespace ToyShelf.Application.Models.Shipment.Response
 		public List<DamageReturnItemResponse>? DamageReturnItems { get; set; }
 
 		// Thêm thông tin Media (Bằng chứng lúc Pickup/Delivery) nếu FE cần hiển thị
-		public List<string>? MediaUrls { get; set; }
+		//public List<string>? MediaUrls { get; set; }
+		public List<ShipmentMediaResponse> Medias { get; set; } = new();
 	}
 }
