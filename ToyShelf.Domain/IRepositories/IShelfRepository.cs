@@ -22,5 +22,8 @@ namespace ToyShelf.Domain.IRepositories
 		Task<List<Shelf>> GetByIds(List<Guid> ids);
 		Task<List<Shelf>> GetByIdsWithDetailsAsync(List<Guid> ids);
 		Task<string?> GetLastShelfCodeAsync();
-	}
+
+		Task<int> CountShelvesAsync(ShelfStatus? status = null);
+
+    }
 }

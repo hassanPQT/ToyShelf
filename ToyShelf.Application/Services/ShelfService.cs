@@ -252,5 +252,10 @@ namespace ToyShelf.Application.Services
                 }).ToList() ?? new List<ShelfTypeResponse.ShelfTypeLevelResponse>()
             };
         }
+
+        public async Task<int> GetCountAsync(ShelfStatus? status = null)
+        {
+            return await _shelfRepository.CountShelvesAsync(status);
+        }
     }
 }
